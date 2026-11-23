@@ -32,6 +32,17 @@ def calculate_entropy(password: str) -> float:
     if any(c in string.punctuation for c in password):
         pool += 32
     return round(len(password) * math.log2(pool), 2) if pool > 0 else 0.0
+def strength_rating(password: str) -> str:
+    """Classifies password strength as Weak, Moderate, or Strong."""
+    if not check_length(password):
+        return "Weak"
+    score = character_variety_score(password)
+    entropy = calculate_entropy(password)
+    if score >= 3 and entropy >= 50:
+        return "Strong"
+    elif score >= 2 and entropy >= 35:
+        return "Moderate"
+    return "Weak"
 
 if __name__ == "__main__":
     pwd = input("Enter a password to analyze: ")
